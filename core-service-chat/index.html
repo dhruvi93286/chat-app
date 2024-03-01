@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Chat App</title>
+</head>
+<body>
+    <div id="loginForm">
+        <input type="text" id="usernameInput" placeholder="Enter username">
+        <input type="text" id="passwordInput" placeholder="Enter password">
+        <input type="text" id="roomInput" placeholder="Enter room name">
+        <button id="loginButton">Login</button>
+    </div>
+
+    <div id="chatInterface" style="display: none;">
+        <ul id="messageList"></ul>
+        <input type="text" id="messageInput" placeholder="Type your message...">
+        <button id="sendButton">Send</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+
+        const socket = io();
+
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            if (message !== '') {
+                socket.emit('chat message', message);
+                messageInput.value = '';
+            }
+        }
+
+        document.getElementById('sendButton').addEventListener('click', sendMessage);
+
+        socket.on('chat message', (msg) => {
+            const messageList = document.getElementById('messageList');
+            const messageItem = document.createElement('li');
+            messageItem.textContent = msg;
+            messageList.appendChild(messageItem);
+        });
+
+        function login() {
+            const usernameInput = document.getElementById('usernameInput');
+            const passwordInput =document.getElementById('passwordInput');
+            const roomInput = document.getElementById('roomInput');
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            const room = roomInput.value.trim();
+            if (username !== '' && room !== ''&&password!=='') {
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username ,password}),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.setItem('token', data.token);
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('chatInterface').style.display = 'block';
+                    socket.auth = { token: data.token };
+                    socket.connect();
+                    socket.emit('join', username, room);
+                })
+                .catch(error =>   alert('Unauthorized'));
+            }
+        }
+
+        document.getElementById('loginButton').addEventListener('click', login);
+    </script>
+</body>
+</html>

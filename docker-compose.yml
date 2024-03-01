@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  db:
+    build: ./db
+    image: core-service-database:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+    restart: always
+  chat:
+    build:
+      context: ./core-service-chat
+    image: core-service-chat:latest
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_HOST: '3.25.224.213'
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    restart: on-failure
+  admin:
+    image: phpmyadmin
+    restart: always
+    environment:
+      - PMA_ARBITRARY=1
+    ports:
+      - 8080:80
