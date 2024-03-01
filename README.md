@@ -14,6 +14,5 @@ You can use the following login credentials to access the application:
 - Password: [12]
 
 ## Video Demo
-
-[![Watch the video](https://drive.google.com/file/d/1Gmo_tFqi8Ovc4Lc4unA0L_PpeRCWUxAf/view?usp=sharing)]
+[here] (https://drive.google.com/file/d/1Gmo_tFqi8Ovc4Lc4unA0L_PpeRCWUxAf/view)
 
