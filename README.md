@@ -14,5 +14,10 @@ You can use the following login credentials to access the application:
 - Password: [12]
 
 ## Video Demo
+
+- Login process for both users and joining the chat room together.
+- Show unauthorized access error handling.
+- Showing how both users join different chat rooms.
+
 [here] (https://drive.google.com/file/d/1Gmo_tFqi8Ovc4Lc4unA0L_PpeRCWUxAf/view)
 
