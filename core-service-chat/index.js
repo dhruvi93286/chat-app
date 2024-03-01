@@ -15,7 +15,7 @@ const JWT_SECRET = process.env.JWT_SECRET ||'xyz7#ndsd8@';
 console.log("process.env.MYSQL_HOST----->",process.env.MYSQL_HOST);
 const connection = mysql.createPool({
 	connectionLimit: 10,
-	host: '3.25.224.213',
+	host: process.env.MYSQL_HOST ||'3.25.224.213',
 	user: process.env.MYSQL_USER || 'root',
 	password: process.env.MYSQL_PASSWORD || 'password',
 	database: process.env.MYSQL_DATABASE || 'test'
@@ -24,13 +24,11 @@ connection.on('error', (err) => {
     console.error('MySQL connection error:', err);
 });
 
-// Check for successful connection
 connection.getConnection((err, conn) => {
     if (err) {
         console.error('Error connecting to MySQL database:', err);
     } else {
-        console.log('Connected to MySQL database');
-        // Release the connection back to the pool
+        console.log('Connected-----');
         conn.release();
     }
 });
